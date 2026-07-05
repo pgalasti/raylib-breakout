@@ -1,9 +1,12 @@
-#ifndef RBREAKOUT_ENTITY_H
-#define RBREAKOUT_ENTITY_H
+#ifndef RBREAKOUT_RENDERER_H
+#define RBREAKOUT_RENDERER_H
 
 #include "ui/Colors.h"
+#include "core/Entity.h"
 
 namespace RBreakout::UI {
+
+using namespace RBreakout::Core;
 
 class Renderer {
 public:
@@ -17,6 +20,7 @@ public:
   void StartFrame();
   void EndFrame();
   void ClearScreen(RColor color = RColor::Black);
+  void Render(const EntityList& entities);
 
 };
 

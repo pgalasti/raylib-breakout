@@ -4,16 +4,21 @@
 
 using namespace RBreakout::Core;
 
-Game::Game() {
+Game::Game() 
+  : m_pRenderer { std::make_unique<UI::Renderer>() },
+    m_pEntityManager { std::make_unique<EntityManager>(EntityManager::Options{300uz}) }
+{
   UI::WindowOptions options {800, 350, 120, "Breakout"};
   m_pWindow = std::make_unique<UI::Window>(options);
-  m_pRenderer = std::make_unique<UI::Renderer>();
 }
 
 void Game::Start() {
   m_pWindow->Init();
 
-
+  Point2Df position;
+  position.pos[0] = 360;
+  position.pos[1] = 60;
+  m_pEntityManager->RegisterEntity(position);
 }
 
 void Game::UpdateGameState() {
@@ -24,6 +29,10 @@ void Game::RenderState() {
 
   m_pRenderer->StartFrame();
   m_pRenderer->ClearScreen();
+
+  const auto& renderableEntities {m_pEntityManager->GetRenderableEntities()};
+  m_pRenderer->Render(renderableEntities);
+
   m_pRenderer->EndFrame();
 
 }

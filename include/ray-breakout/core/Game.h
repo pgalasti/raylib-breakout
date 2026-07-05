@@ -3,10 +3,14 @@
 
 #include "ui/Window.h"
 #include "ui/Renderer.h"
+#include "core/EntityManager.h"
 
 #include <memory>
+#include <unordered_map>
 
 namespace RBreakout::Core {
+
+
 
 class Game {
 public:
@@ -20,9 +24,11 @@ public:
   bool IsPaused() const;
   bool IsShuttingDown() const;
 
+
 private:
   std::unique_ptr<UI::Window> m_pWindow;
   std::unique_ptr<UI::Renderer> m_pRenderer;
+  std::unique_ptr<EntityManager> m_pEntityManager;
 };
 
 } // RBreakout::Core
