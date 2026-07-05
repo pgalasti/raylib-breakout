@@ -10,6 +10,16 @@ struct Point {
 
 using Point2Df = Point<float, 2>;
 
+template<>
+struct Point<float, 2> {
+  union {
+    float pos[2];
+    struct {
+      float x, y;
+    };
+  };
+};
+
 } // RBreakout::Core
 
 #endif //RBREAKOUT_GEOMETRY_H

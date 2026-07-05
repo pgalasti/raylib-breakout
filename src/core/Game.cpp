@@ -17,8 +17,10 @@ void Game::Start() {
   m_pWindow->Init();
 
   Point2Df position;
-  position.pos[0] = 360;
-  position.pos[1] = 60;
+  position.x = 360;
+  position.y = 60;
+//  position.pos[0] = 360;
+//  position.pos[1] = 60;
   m_pEntityManager->RegisterEntity(position);
 }
 
