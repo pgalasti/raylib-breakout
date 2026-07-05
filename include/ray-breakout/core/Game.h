@@ -2,6 +2,7 @@
 #define RBREAKOUT_GAME_H
 
 #include "ui/Window.h"
+#include "ui/Renderer.h"
 
 #include <memory>
 
@@ -21,6 +22,7 @@ public:
 
 private:
   std::unique_ptr<UI::Window> m_pWindow;
+  std::unique_ptr<UI::Renderer> m_pRenderer;
 };
 
 } // RBreakout::Core

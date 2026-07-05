@@ -7,6 +7,7 @@ using namespace RBreakout::Core;
 Game::Game() {
   UI::WindowOptions options {800, 350, 120, "Breakout"};
   m_pWindow = std::make_unique<UI::Window>(options);
+  m_pRenderer = std::make_unique<UI::Renderer>();
 }
 
 void Game::Start() {
@@ -20,10 +21,11 @@ void Game::UpdateGameState() {
 }
 
 void Game::RenderState() {
-  //Replace with class renderer logic
-  BeginDrawing();
-  ClearBackground(RAYWHITE);
-  EndDrawing();
+
+  m_pRenderer->StartFrame();
+  m_pRenderer->ClearScreen();
+  m_pRenderer->EndFrame();
+
 }
 
 void Game::Shutdown() {

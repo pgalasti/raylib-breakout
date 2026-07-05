@@ -16,6 +16,7 @@ add_executable(breakout
   src/main.cpp
   src/ui/Window.cpp
   src/core/Game.cpp
+  src/ui/Renderer.cpp
 )
 
 target_include_directories(breakout PRIVATE include/ray-breakout)
