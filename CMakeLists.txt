@@ -15,6 +15,7 @@ add_subdirectory(external/raylib)
 add_executable(breakout
   src/main.cpp
   src/ui/Window.cpp
+  src/core/Game.cpp
 )
 
 target_include_directories(breakout PRIVATE include/ray-breakout)

@@ -1,4 +1,5 @@
-#include "ui/Window.h"
+#include "core/Game.h"
+
 #include "raylib.h" // Replace with renderer
 
 #include<iostream>
@@ -7,19 +8,14 @@
 
 int main(int argc, char* argv[]) {
 
-  RBreakout::UI::WindowOptions options {800, 350, 120, "Breakout"};
-  std::unique_ptr<RBreakout::UI::Window> pWindow = std::make_unique<RBreakout::UI::Window>(options);
-
-  pWindow->Init();
-
-  while(pWindow->IsWindowOpen()) {
-    //Replace with renderer logic
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    EndDrawing();
+  std::unique_ptr<RBreakout::Core::Game> pGame {std::make_unique<RBreakout::Core::Game>()};
+  pGame->Start();
+  while(!pGame->IsShuttingDown()) {
+    pGame->UpdateGameState();
+    pGame->RenderState();
   };
   
-  pWindow->Shutdown();
+  pGame->Shutdown();
 
   return 0;
 }
