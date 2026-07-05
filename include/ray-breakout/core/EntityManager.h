@@ -32,7 +32,8 @@ private:
   EntityMap m_EntityMap;
   EntityID nextId {0}; // I can use my ID Generator class in glibs but for now just use this.
 
-  mutable EntityList m_EntityList; // Clear per frame and re-use this container for listing entities to render
+  // Clear per frame and re-use this container for listing entities to render
+  mutable EntityList m_EntityList; 
 };
 
 } // RBreakout::Core

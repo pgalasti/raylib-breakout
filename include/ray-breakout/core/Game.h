@@ -4,6 +4,7 @@
 #include "ui/Window.h"
 #include "ui/Renderer.h"
 #include "core/EntityManager.h"
+#include "core/Timer.h"
 
 #include <memory>
 #include <unordered_map>
@@ -29,6 +30,7 @@ private:
   std::unique_ptr<UI::Window> m_pWindow;
   std::unique_ptr<UI::Renderer> m_pRenderer;
   std::unique_ptr<EntityManager> m_pEntityManager;
+  std::unique_ptr<FrameTimer> m_pFrameTimer;
 };
 
 } // RBreakout::Core

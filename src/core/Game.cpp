@@ -6,7 +6,8 @@ using namespace RBreakout::Core;
 
 Game::Game() 
   : m_pRenderer { std::make_unique<UI::Renderer>() },
-    m_pEntityManager { std::make_unique<EntityManager>(EntityManager::Options{300uz}) }
+    m_pEntityManager { std::make_unique<EntityManager>(EntityManager::Options{300uz}) },
+    m_pFrameTimer { std::make_unique<RLFrameTimer>() }
 {
   UI::WindowOptions options {800, 350, 120, "Breakout"};
   m_pWindow = std::make_unique<UI::Window>(options);
@@ -22,7 +23,8 @@ void Game::Start() {
 }
 
 void Game::UpdateGameState() {
-
+  m_pFrameTimer->Tick();
+  const double lastTime { m_pFrameTimer->GetFrameTime() };
 }
 
 void Game::RenderState() {
