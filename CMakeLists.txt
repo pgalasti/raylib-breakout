@@ -18,6 +18,8 @@ add_executable(breakout
   src/core/Game.cpp
   src/ui/Renderer.cpp
   src/core/EntityManager.cpp
+  src/core/EventBus.cpp
+  src/core/EntityEventCallback.cpp
 )
 
 target_include_directories(breakout PRIVATE include/ray-breakout)

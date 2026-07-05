@@ -5,6 +5,8 @@
 #include "ui/Renderer.h"
 #include "core/EntityManager.h"
 #include "core/Timer.h"
+#include "core/EventBus.h"
+#include "core/EntityEventCallback.h"
 
 #include <memory>
 #include <unordered_map>
@@ -31,6 +33,8 @@ private:
   std::unique_ptr<UI::Renderer> m_pRenderer;
   std::unique_ptr<EntityManager> m_pEntityManager;
   std::unique_ptr<FrameTimer> m_pFrameTimer;
+  std::unique_ptr<EntityEventCallback> m_pEntityEventCallback;
+  std::unique_ptr<EventBus> m_pEventBus;
 };
 
 } // RBreakout::Core

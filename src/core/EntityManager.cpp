@@ -10,8 +10,8 @@ EntityManager::EntityManager(const EntityManager::Options& options) {
 
 EntityID EntityManager::RegisterEntity(const Point2Df& position, const EntityOptions& options/*={}*/) {
  
-  const EntityID id {nextId++};	
-  m_EntityMap.emplace(nextId, std::make_unique<Entity>(nextId, position));
+  const EntityID id {nextId++};
+  m_EntityMap.emplace(id, std::make_unique<Entity>(id, position));
 
   // We'll figure out options later
   return id;
@@ -20,8 +20,8 @@ EntityID EntityManager::RegisterEntity(const Point2Df& position, const EntityOpt
 void EntityManager::UpdateEntity(const EntityID id, const Point2Df& position) {
   auto iter {m_EntityMap.find(id)};
 
-  if(iter != m_EntityMap.end()) {
-    // Should we throw? 
+  if(iter == m_EntityMap.end()) {
+    // Should we throw?
     return;
   }
 
@@ -41,4 +41,9 @@ const EntityList& EntityManager::GetRenderableEntities() const {
   }
 
   return m_EntityList;
+}
+
+Entity* EntityManager::Lookup(const EntityID id) {
+  auto iter {m_EntityMap.find(id)};
+  return iter != m_EntityMap.end() ? iter->second.get() : nullptr;
 }

@@ -27,6 +27,8 @@ public:
   void DeregisterEntity(const EntityID id);
 
   const EntityList& GetRenderableEntities() const;
+  
+  Entity* Lookup(const EntityID id);
 
 private:
   EntityMap m_EntityMap;
