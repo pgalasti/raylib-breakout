@@ -32,6 +32,17 @@ struct Point<float, 2> {
   Point<float, 2> operator-(const Point<float, 2>& other) {
     return Point<float, 2>{this->x - other.x, this->y - other.y};
   }
+  
+  Point<float, 2>& operator+=(const Point<float, 2>& other) {
+    x += other.x;
+    y += other.y;
+    return *this;
+  }
+  Point<float, 2>& operator-=(const Point<float, 2>& other) {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
 };
 
 using Vector2Df = Point2Df;

@@ -1,5 +1,6 @@
 #include "core/Game.h"
 #include "core/Events.h"
+#include "core/Geometry.h"
 
 #include "raylib.h"
 
@@ -27,12 +28,14 @@ void Game::Start() {
   const EntityID id {m_pEntityManager->RegisterEntity(position)};
 
   m_pEventBus->Subscribe(id, EventType::PlayerMovement);
-  m_pEntityEventCallback->Register(id, [this, id](Event*) {
+  m_pEntityEventCallback->Register(id, [this, id](Event* pEvent) {
       Entity* pEntity {m_pEntityManager->Lookup(id)};
       if(!pEntity) {
         return false;
       }
-      pEntity->position.x += 0.55;
+
+      const Vector2Df moveVector = dynamic_cast<MovementEvent*>(pEvent->second.get())->vec;
+      pEntity->position += moveVector;
       return true;
     }
   );
@@ -43,7 +46,7 @@ void Game::UpdateGameState() {
   const double lastTime { m_pFrameTimer->GetFrameTime() };
 
   // Test code. Will move to level logic
-  Event testMoveEvent { EventType::PlayerMovement, std::make_unique<MovementEvent>(Vector2Df{}) };
+  Event testMoveEvent { EventType::PlayerMovement, std::make_unique<MovementEvent>(Vector2Df{1.0f, 1.0f}) };
   m_pEventBus->QueueEvent(std::move(testMoveEvent));
   m_pEventBus->InvokeEvents();
 }

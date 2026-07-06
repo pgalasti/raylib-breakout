@@ -20,7 +20,7 @@ struct EventDetails {
 
   EventPriority priority;
   
-  ~EventDetails() = default;
+  virtual ~EventDetails() = default;
 
 protected:
   EventDetails(EventPriority priority) : priority {priority} {}
