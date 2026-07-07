@@ -16,12 +16,16 @@ void PollInput::Poll() {
     }
   }
 
+  for(const auto& [raylibKey, mappedLetterKey] : g_letterkeymap) {
+    if(::IsKeyDown(raylibKey)) {
+      m_InputState |= mappedLetterKey;
+    }
+  }
 }
 
 bool PollInput::IsKeyPressed(const InputState& inputState, std::string_view keyCode) {
 
-  // For letters, use the character as the key code.
-
+  
   if(keyCode == ENTER_CODE) {
     return inputState.keys & ENTER_KEY;
   } else if(keyCode == ARROW_LEFT_CODE) {
@@ -32,6 +36,10 @@ bool PollInput::IsKeyPressed(const InputState& inputState, std::string_view keyC
     return inputState.keys & UP_KEY;
   } else if(keyCode == ARROW_DOWN_CODE) {
     return inputState.keys & DOWN_KEY;
+  }
+  auto find = inputState.letterKeys.find(keyCode);
+  if(inputState.letterKeys.find(keyCode) != std::string::npos) {
+    return true;
   }
 
   return false;

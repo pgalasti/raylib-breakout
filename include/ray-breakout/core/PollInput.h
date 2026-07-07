@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <unordered_map>
 #include <string_view>
+#include <string>
+
+#include <iostream> // removee me
 
 #include "raylib.h"
 
@@ -26,13 +29,24 @@ constexpr KeyBitFlag DOWN_KEY   { 1 << 2 };
 constexpr KeyBitFlag LEFT_KEY   { 1 << 3 };
 constexpr KeyBitFlag RIGHT_KEY  { 1 << 4 };
 
+
 struct InputState {
   KeyBitFlag keys {0};
-
-  void reset() { keys = 0; }
+  std::string letterKeys {""};
+  
+  void reset() { 
+    keys = 0; 
+    letterKeys.clear();
+  }
   
   InputState& operator|=(KeyBitFlag bits) {
     keys |= bits;
+    return *this;
+  }
+  
+  InputState& operator|=(char letter) {
+    letterKeys.push_back(letter);
+    std::cout << letter << std::endl;
     return *this;
   }
 
@@ -42,13 +56,21 @@ struct InputState {
 // It probably makes more sense to just be a list structure
 // but this is fine for now.
 using RaylibKeyMap = std::unordered_map<int, KeyBitFlag>;
-
 inline const RaylibKeyMap g_keymap {
   {KEY_ENTER,  ENTER_KEY},
   {KEY_UP,     UP_KEY},
   {KEY_DOWN,   DOWN_KEY},
   {KEY_LEFT,   LEFT_KEY},
   {KEY_RIGHT,  RIGHT_KEY}
+};
+
+// Probably a better way to handle letter keys but this will do for now.
+using RaylibLetterKeyMap = std::unordered_map<int, char>;
+inline const RaylibLetterKeyMap g_letterkeymap {
+  {KEY_A, 'A'},
+  {KEY_S, 'S'},
+  {KEY_D, 'D'},
+  {KEY_W, 'W'},
 };
 
 constexpr std::string_view ARROW_LEFT_CODE  {"AL"};
