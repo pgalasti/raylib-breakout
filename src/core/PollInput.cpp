@@ -11,7 +11,7 @@ void PollInput::Poll() {
   m_InputState.reset();
 
   for(const auto& [raylibKey, mappedKey] : g_keymap) {
-    if(::IsKeyPressed(raylibKey)) {
+    if(::IsKeyDown(raylibKey)) {
       m_InputState |= mappedKey;
     }
   }
