@@ -41,13 +41,29 @@ void Game::Start() {
   );
 }
 
+const InputState& Game::PollInputState() {
+  m_PollInput.Poll();
+  return m_PollInput.GetPollState(); 
+}
+
 void Game::UpdateGameState() {
+  const InputState& inputState = PollInputState();
+  
   m_pFrameTimer->Tick();
   const double lastTime { m_pFrameTimer->GetFrameTime() };
 
+
+  bool moveLeft  {PollInput::IsKeyPressed(inputState, ARROW_LEFT_CODE)};
+  bool moveRight {PollInput::IsKeyPressed(inputState, ARROW_RIGHT_CODE)};
   // Test code. Will move to level logic
-  Event testMoveEvent { EventType::PlayerMovement, std::make_unique<MovementEvent>(Vector2Df{1.0f, 1.0f}) };
-  m_pEventBus->QueueEvent(std::move(testMoveEvent));
+  if(moveLeft) {
+    Event testMoveEvent { EventType::PlayerMovement, std::make_unique<MovementEvent>(Vector2Df{-10.0f, 0.0f}) };
+    m_pEventBus->QueueEvent(std::move(testMoveEvent));
+  } else if(moveRight) {
+    Event testMoveEvent { EventType::PlayerMovement, std::make_unique<MovementEvent>(Vector2Df{10.0f, 0.0f}) };
+    m_pEventBus->QueueEvent(std::move(testMoveEvent));
+  }
+  
   m_pEventBus->InvokeEvents();
 }
 

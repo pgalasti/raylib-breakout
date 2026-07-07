@@ -7,6 +7,7 @@
 #include "core/Timer.h"
 #include "core/EventBus.h"
 #include "core/EntityEventCallback.h"
+#include "core/PollInput.h"
 
 #include <memory>
 #include <unordered_map>
@@ -20,6 +21,7 @@ public:
   Game(/*Can add options via params later*/);
 
   void Start();
+  const InputState& PollInputState();
   void UpdateGameState();
   void RenderState();
   void Shutdown();
@@ -35,6 +37,8 @@ private:
   std::unique_ptr<FrameTimer> m_pFrameTimer;
   std::unique_ptr<EntityEventCallback> m_pEntityEventCallback;
   std::unique_ptr<EventBus> m_pEventBus;
+
+  PollInput m_PollInput;
 };
 
 } // RBreakout::Core
