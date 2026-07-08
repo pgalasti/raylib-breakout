@@ -2,6 +2,7 @@
 #define RBREAKOUT_EVENTS_H
 
 #include "core/Geometry.h"
+#include "core/Entity.h"
 
 #include <utility>
 #include <memory>
@@ -10,7 +11,8 @@ namespace RBreakout::Core {
 
 enum class EventType {
   PlayerMovement,
-  CreatePlayer
+  CreatePlayer,
+  EnableMovement
 };
 
 enum class EventPriority {
@@ -41,6 +43,13 @@ struct CreatePlayerEvent : public EventDetails {
     : EventDetails{EventPriority::High}, startPosition{position} {}
 
   Point2Df startPosition; 
+};
+
+struct EnableMovementEvent : public EventDetails {
+  EnableMovementEvent(const EntityID playerId)
+    : EventDetails(EventPriority::High), playerId{playerId} {}
+
+  EntityID playerId;
 };
 
 } // RBreakout::Core

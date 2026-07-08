@@ -19,6 +19,35 @@ Game::Game()
   m_pEventBus = std::make_unique<EventBus>(*m_pEntityEventCallback);
 }
 
+namespace {
+
+bool PlayerEventHandler(EntityManager* pEntityManager, const EntityID playerId, Event* pEvent) {
+  Entity* pEntity {pEntityManager->Lookup(playerId)};
+  if(!pEntity) {
+    return false;
+  }
+
+  const EventType eventType {pEvent->first};
+  EventDetails* pEventDetails {pEvent->second.get()};
+
+  switch(eventType) {
+    case EventType::PlayerMovement: {
+      auto* pMovement {dynamic_cast<MovementEvent*>(pEventDetails)};
+      pEntity->position += pMovement->vec;
+      break;
+    }
+    case EventType::EnableMovement:
+      // Maybe control if player can move later. 
+      break;
+    default:
+      break;
+  }
+
+  return true;
+}
+
+} // anonymous namespace for handling
+
 void Game::Start() {
   m_pWindow->Init();
 
@@ -28,20 +57,14 @@ void Game::Start() {
     const EventType eventType = pEvent->first;
     EventDetails* pEventDetails = pEvent->second.get();
 
-    // Maybe move this to a defined function elsewhere
     if(eventType == EventType::CreatePlayer) {
       auto createPlayerEvent {dynamic_cast<CreatePlayerEvent*>(pEventDetails)};
       const EntityID playerId {m_pEntityManager->RegisterEntity(createPlayerEvent->startPosition, EntityOptions{.doRender = true})};
+     
       m_pEventBus->Subscribe(playerId, EventType::PlayerMovement);
+      m_pEventBus->Subscribe(playerId, EventType::EnableMovement);
       m_pEntityEventCallback->Register(playerId, [this, playerId](Event* pEvent) {
-        Entity* pEntity {m_pEntityManager->Lookup(playerId)};
-        if(!pEntity) {
-          return false;
-        }
-
-        const Vector2Df moveVector = dynamic_cast<MovementEvent*>(pEvent->second.get())->vec;
-        pEntity->position += moveVector;
-        return true;
+        return PlayerEventHandler(m_pEntityManager.get(), playerId, pEvent);
       });
     }
 
@@ -53,6 +76,7 @@ void Game::Start() {
   // TODO integrate with game class
   RBreakout::Game::TestLevel testLevel(*m_pEventBus);
   testLevel.Initialize();
+  
   // Do a one time InvokeEvents from level loading
   m_pEventBus->InvokeEvents();
 }
