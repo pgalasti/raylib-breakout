@@ -21,6 +21,8 @@ add_executable(breakout
   src/core/EventBus.cpp
   src/core/EntityEventCallback.cpp
   src/core/PollInput.cpp
+  src/core/Level.cpp
+  src/game/TestLevel.cpp
 )
 
 target_include_directories(breakout PRIVATE include/ray-breakout)

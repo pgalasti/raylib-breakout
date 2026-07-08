@@ -11,9 +11,8 @@ EntityManager::EntityManager(const EntityManager::Options& options) {
 EntityID EntityManager::RegisterEntity(const Point2Df& position, const EntityOptions& options/*={}*/) {
  
   const EntityID id {nextId++};
-  m_EntityMap.emplace(id, std::make_unique<Entity>(id, position));
+  m_EntityMap.emplace(id, std::make_unique<Entity>(id, position, options.doRender));
 
-  // We'll figure out options later
   return id;
 }
 
@@ -36,8 +35,9 @@ const EntityList& EntityManager::GetRenderableEntities() const {
   m_EntityList.clear();
 
   for(const auto& [key, value] : m_EntityMap) {
-    // Renderable filter here
-    m_EntityList.push_back(*value);
+    if(value->doRender) {
+      m_EntityList.push_back(*value);
+    }
   }
 
   return m_EntityList;

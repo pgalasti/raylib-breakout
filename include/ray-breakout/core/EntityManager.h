@@ -22,7 +22,7 @@ public:
 
 
   // Should setup an emplace RegisterEntity in future
-  EntityID RegisterEntity(const Point2Df& position, const EntityOptions& options = EntityOptions{});
+  EntityID RegisterEntity(const Point2Df& position = {}, const EntityOptions& options = EntityOptions{});
   void UpdateEntity(const EntityID id, const Point2Df& position); // Need a more generic option.
   void DeregisterEntity(const EntityID id);
 
@@ -30,9 +30,12 @@ public:
   
   Entity* Lookup(const EntityID id);
 
+  static constexpr EntityID GeneralEntityID  {0};
+  static constexpr EntityID StartingEntityID {GeneralEntityID+1};
+
 private:
   EntityMap m_EntityMap;
-  EntityID nextId {0}; // I can use my ID Generator class in glibs but for now just use this.
+  EntityID nextId {StartingEntityID}; // I can use my ID Generator class in glibs but for now just use this.
 
   // Clear per frame and re-use this container for listing entities to render
   mutable EntityList m_EntityList; 

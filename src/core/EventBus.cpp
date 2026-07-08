@@ -48,9 +48,11 @@ void EventBus::InvokeEvents() {
 
     const EntitySet& set { iter->second };
     for(auto entityId : set) {
-      const EventCallbackFunc& callback {m_EntityEventCallbackLookup.Lookup(entityId)};
+      const EventCallbackFuncList& callbacks {m_EntityEventCallbackLookup.Lookup(entityId)};
 
-      callback(&event);
+      for(const auto& callback : callbacks) {
+        callback(&event);
+      }
     }
   }
 }

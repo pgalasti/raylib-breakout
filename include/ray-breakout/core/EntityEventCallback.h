@@ -5,12 +5,15 @@
 #include "core/Events.h"
 
 #include <functional>
+#include <list>
 #include <unordered_map>
 
 namespace RBreakout::Core {
 
 using EventCallbackFunc = std::function<bool(Event*)>;
-using EntityEventCallbackMap = std::unordered_map<EntityID, EventCallbackFunc>;
+using EventCallbackFuncList = std::list<EventCallbackFunc>;
+using EntityEventCallbackMap = std::unordered_map<EntityID, EventCallbackFuncList>;
+using GeneralEntityEvent = EntityID;
 
 class EntityEventCallback {
 public:
@@ -18,11 +21,14 @@ public:
   void Register(const EntityID, const EventCallbackFunc func);
   void Deregister(const EntityID);
 
-  const EventCallbackFunc& Lookup(const EntityID entityId) const;
+  const EventCallbackFuncList& Lookup(const EntityID entityId) const;
  
   struct NotFound {
     std::string message;
-  }; 
+  };
+
+
+
 private:
   EntityEventCallbackMap m_EntityEventMap;
 

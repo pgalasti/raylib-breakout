@@ -13,10 +13,11 @@ using EntityID = unsigned int;
 class Entity {
 public:
 
-  Entity(const EntityID id, const Point2Df& position)
-    : id {id}, position {position} {}
+  Entity(const EntityID id, const Point2Df& position, bool doRender = false)
+    : id {id}, position {position}, doRender {doRender} {}
 
   Point2Df position;
+  bool doRender;
 
 protected:
   EntityID id;

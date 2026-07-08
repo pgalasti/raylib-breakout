@@ -9,7 +9,8 @@
 namespace RBreakout::Core {
 
 enum class EventType {
-  PlayerMovement
+  PlayerMovement,
+  CreatePlayer
 };
 
 enum class EventPriority {
@@ -33,6 +34,13 @@ struct MovementEvent : public EventDetails {
     : EventDetails(priority), vec {v} {}
   
   Vector2Df vec;
+};
+
+struct CreatePlayerEvent : public EventDetails {
+  CreatePlayerEvent(const Point2Df& position) 
+    : EventDetails{EventPriority::High}, startPosition{position} {}
+
+  Point2Df startPosition; 
 };
 
 } // RBreakout::Core

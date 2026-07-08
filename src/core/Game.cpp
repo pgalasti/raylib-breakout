@@ -1,6 +1,7 @@
 #include "core/Game.h"
 #include "core/Events.h"
 #include "core/Geometry.h"
+#include "game/TestLevel.h"
 
 #include "raylib.h"
 
@@ -21,24 +22,39 @@ Game::Game()
 void Game::Start() {
   m_pWindow->Init();
 
-  // Move to level loading later
-  Point2Df position;
-  position.x = 360;
-  position.y = 60;
-  const EntityID id {m_pEntityManager->RegisterEntity(position)};
+  const EntityID generalEntity {m_pEntityManager->RegisterEntity()};
+  m_pEventBus->Subscribe(generalEntity, EventType::CreatePlayer);
+  m_pEntityEventCallback->Register(generalEntity, [this, generalEntity](Event* pEvent) {
+    const EventType eventType = pEvent->first;
+    EventDetails* pEventDetails = pEvent->second.get();
 
-  m_pEventBus->Subscribe(id, EventType::PlayerMovement);
-  m_pEntityEventCallback->Register(id, [this, id](Event* pEvent) {
-      Entity* pEntity {m_pEntityManager->Lookup(id)};
-      if(!pEntity) {
-        return false;
-      }
+    // Maybe move this to a defined function elsewhere
+    if(eventType == EventType::CreatePlayer) {
+      auto createPlayerEvent {dynamic_cast<CreatePlayerEvent*>(pEventDetails)};
+      const EntityID playerId {m_pEntityManager->RegisterEntity(createPlayerEvent->startPosition, EntityOptions{.doRender = true})};
+      m_pEventBus->Subscribe(playerId, EventType::PlayerMovement);
+      m_pEntityEventCallback->Register(playerId, [this, playerId](Event* pEvent) {
+        Entity* pEntity {m_pEntityManager->Lookup(playerId)};
+        if(!pEntity) {
+          return false;
+        }
 
-      const Vector2Df moveVector = dynamic_cast<MovementEvent*>(pEvent->second.get())->vec;
-      pEntity->position += moveVector;
-      return true;
+        const Vector2Df moveVector = dynamic_cast<MovementEvent*>(pEvent->second.get())->vec;
+        pEntity->position += moveVector;
+        return true;
+      });
     }
-  );
+
+    return true;
+  });
+  
+
+  // Load Level
+  // TODO integrate with game class
+  RBreakout::Game::TestLevel testLevel(*m_pEventBus);
+  testLevel.Initialize();
+  // Do a one time InvokeEvents from level loading
+  m_pEventBus->InvokeEvents();
 }
 
 const InputState& Game::PollInputState() {
