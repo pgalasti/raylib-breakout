@@ -23,23 +23,24 @@ void PollInput::Poll() {
   }
 }
 
-bool PollInput::IsKeyPressed(const InputState& inputState, std::string_view keyCode) {
+bool PollInput::IsKeyPressed(const InputState& inputState, const std::list<std::string_view>& keyCodes) {
 
-  
-  if(keyCode == ENTER_CODE) {
-    return inputState.keys & ENTER_KEY;
-  } else if(keyCode == ARROW_LEFT_CODE) {
-    return inputState.keys & LEFT_KEY;
-  } else if(keyCode == ARROW_RIGHT_CODE) {
-    return inputState.keys & RIGHT_KEY;
-  } else if(keyCode == ARROW_UP_CODE) {
-    return inputState.keys & UP_KEY;
-  } else if(keyCode == ARROW_DOWN_CODE) {
-    return inputState.keys & DOWN_KEY;
-  }
-  auto find = inputState.letterKeys.find(keyCode);
-  if(inputState.letterKeys.find(keyCode) != std::string::npos) {
-    return true;
+  for(const auto& keyCode : keyCodes) {
+    if(keyCode == ENTER_CODE && (inputState.keys & ENTER_KEY)) {
+      return true;
+    } else if(keyCode == ARROW_LEFT_CODE && (inputState.keys & LEFT_KEY)) {
+      return true;
+    } else if(keyCode == ARROW_RIGHT_CODE && (inputState.keys & RIGHT_KEY)) {
+      return true;
+    } else if(keyCode == ARROW_UP_CODE && (inputState.keys & UP_KEY)) {
+      return true;
+    } else if(keyCode == ARROW_DOWN_CODE && (inputState.keys & DOWN_KEY)) {
+      return true;
+    }
+
+    else if(inputState.letterKeys.find(keyCode) != std::string::npos) {
+      return true;
+    }
   }
 
   return false;

@@ -53,8 +53,9 @@ void Game::UpdateGameState() {
   const double lastTime { m_pFrameTimer->GetFrameTime() };
 
 
-  bool moveLeft  {PollInput::IsKeyPressed(inputState, ARROW_LEFT_CODE) ||  PollInput::IsKeyPressed(inputState, std::string_view("A"))};
-  bool moveRight {PollInput::IsKeyPressed(inputState, ARROW_RIGHT_CODE)};
+  bool moveLeft  {PollInput::IsKeyPressed(inputState, {ARROW_LEFT_CODE, "A"})};
+  bool moveRight {PollInput::IsKeyPressed(inputState, {ARROW_RIGHT_CODE, "D"})};
+
   // Test code. Will move to level logic
   if(moveLeft) {
     Event testMoveEvent { EventType::PlayerMovement, std::make_unique<MovementEvent>(Vector2Df{-10.0f, 0.0f}) };

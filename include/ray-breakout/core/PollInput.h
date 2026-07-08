@@ -5,8 +5,7 @@
 #include <unordered_map>
 #include <string_view>
 #include <string>
-
-#include <iostream> // removee me
+#include <list>
 
 #include "raylib.h"
 
@@ -46,7 +45,6 @@ struct InputState {
   
   InputState& operator|=(char letter) {
     letterKeys.push_back(letter);
-    std::cout << letter << std::endl;
     return *this;
   }
 
@@ -87,7 +85,7 @@ public:
   void Poll();
   const InputState& GetPollState() const { return m_InputState; } 
 
-  static bool IsKeyPressed(const InputState& inputState, std::string_view keyCode);
+  static bool IsKeyPressed(const InputState& inputState, const std::list<std::string_view>& keyCodes);
 private:
   InputState m_InputState;
 };
