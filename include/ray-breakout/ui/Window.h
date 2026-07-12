@@ -27,6 +27,8 @@ public:
   void Init();
   bool IsWindowOpen() const;
   void Shutdown();
+
+  const WindowOptions& GetWindowOptions() const { return options; }
 private:
   WindowOptions options;
 

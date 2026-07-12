@@ -8,14 +8,14 @@
 using namespace RBreakout::Core;
 
 Game::Game() 
-  : m_pRenderer { std::make_unique<UI::Renderer>() },
-    m_pEntityManager { std::make_unique<EntityManager>(EntityManager::Options{300uz}) },
+  : m_pEntityManager { std::make_unique<EntityManager>(EntityManager::Options{300uz}) },
     m_pFrameTimer { std::make_unique<RLFrameTimer>() },
     m_pEntityEventCallback { std::make_unique<EntityEventCallback>()}
 {
-  UI::WindowOptions options {800, 350, 120, "Breakout"};
+  UI::WindowOptions options {1920, 1080, 120, "Breakout"};
   m_pWindow = std::make_unique<UI::Window>(options);
 
+  m_pRenderer = std::make_unique<UI::Renderer>(m_pWindow.get());
   m_pEventBus = std::make_unique<EventBus>(*m_pEntityEventCallback);
 }
 
